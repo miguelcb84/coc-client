@@ -1,0 +1,86 @@
+*.py[cod]
+*.pyc
+
+# C extensions
+*.so
+
+# Packages
+*.egg
+*.egg-info
+dist
+build
+eggs
+parts
+bin
+var
+sdist
+develop-eggs
+.installed.cfg
+lib
+lib64
+__pycache__
+
+# Installer logs
+pip-log.txt
+
+# Unit test / coverage reports
+.coverage
+.tox
+nosetests.xml
+.cache
+
+# Translations
+
+# Temporals
+*.py~
+*.po~
+# Vim backup files
+*.swp
+
+# Mr Developer
+.mr.developer.cfg
+.project
+.pydevproject
+.settings
+
+.idea/
+
+# virtualenv
+venv
+
+# environment
+.env
+
+#statis files
+staticfiles
+
+# Vagrant/puppet configuration
+.vagrant/
+puppet/.librarian
+puppet/.tmp
+Puppetfile.lock
+puppet/modules/*
+!puppet/modules/base
+
+# Local data
+.local_data
+tiesport/db.sqlite3
+test_db
+
+# Auxiliar procfiles
+Procfile-*
+
+# redis backup
+dump.rdb
+#Sass cache
+.sass-cache/
+*.css.map
+
+test_db
+
+# new relic local config
+newrelic.ini
+
+# Other (sub)projects
+django-taxonomy/
+tiesport-cards/
