@@ -4,8 +4,15 @@ import requests
 import urllib
 
 
-def build_uri(endpoint, api_version, uri_parts):
-    ''' Build the URL using the endpoint, the api version and the uri parts '''
+def build_uri(endpoint, api_version, uri_parts, uri_args={}):
+    ''' Build the URL using the endpoint, the api version, the uri parts and the args.
+    
+    The resulting uri is as follows:
+    
+    {endpoint}/{api_version}/{uri_part1}/.../{uri_partn}?{uri_args}
+    
+    `uri_args` are url encoded and `uri_parts` too.
+     '''
     # to unicode
     uri_parts = [unicode(x) for x in uri_parts]
     # and encoded 
@@ -14,12 +21,16 @@ def build_uri(endpoint, api_version, uri_parts):
     all_uri_parts = [endpoint, api_version, ] + uri_parts
     # join parts
     url_to_call = "/".join(all_uri_parts)
+    # add params if any
+    if uri_args:
+        url_to_call = "{}?{}".format(url_to_call, urllib.urlencode(uri_args))
     # log
-    print("Url built:{}".format(url_to_call))
+    print ("URI BUILT:{}".format(url_to_call))
     return url_to_call
 
 
 def wrap_response(resp):
+    """ """
     try:
         js_resp = resp.json()
         if resp.ok:
@@ -81,6 +92,12 @@ class ApiCall(object):
     new API call with the attributtes with the existing one, but it appends
     the uri part. Sequential call, thus produce the explained result.
     
+    Note that attributes starting with an underscore are omitted.
+    
+    Additionally, arguments are supported. To use them you must provide dictionary like parameters:
+    
+        api.clans(name='theclan', minMembers=10)
+    
     Args:
         `bearer_token` - the API key provided 
         `endpoint` - The endpoint od the API
@@ -90,14 +107,16 @@ class ApiCall(object):
             returned. 
         `uri_parts` - tuple. Provide an initial value to uri_parts. Used with 
             recursive calls by the `__getattr__` and `__call__` methods. 
+        `uri_args` - arguments of the call.
     '''
     
     def __init__(self, bearer_token, endpoint, api_version, 
-                 extract_items=True, uri_parts=None, ):
+                 extract_items=True, uri_parts=None, uri_args={}):
         self.bearer_token = bearer_token
         self.endpoint = endpoint
         self.api_version = api_version
         self.extract_items=extract_items
+        self.uri_args=uri_args
         if uri_parts is None:
             self.uri_parts = ()
         else:
@@ -107,30 +126,34 @@ class ApiCall(object):
         ''' Append the name of the attribute to the uri_parts tuple. 
         Attributes starting with an underscore are omitted. `self` is returned 
         to enable chainability. '''
-        print("GETATTR:{}".format(k))
         if k.startswith("_"):
             pass
         else:
             #self.uri_parts = self.uri_parts + (k,)
             print(self.uri_parts + (k,))
             return ApiCall(self.bearer_token, self.endpoint, self.api_version, extract_items=self.extract_items,
-                           uri_parts=self.uri_parts + (k,))
+                           uri_parts=self.uri_parts + (k,), uri_args=self.uri_args)
                     
     def __call__(self, *args, **kwargs):
         ''' Append the arguments to the `uri_parts` tuple. `self` is returned 
         to enable chainability. '''
         print('CALL:{}'.format(args))
-        if args:
-            #self.uri_parts = self.uri_parts + args
+        print('KWARGS:{}'.format(kwargs))
+        if args or kwargs:
+            uri_args = {}
+            if kwargs:
+                uri_args = kwargs.copy()
+                uri_args.update(self.uri_args)
+            
             return ApiCall(self.bearer_token, self.endpoint, self.api_version, extract_items=self.extract_items,
-                           uri_parts=self.uri_parts + args)
+                           uri_parts=self.uri_parts + args, uri_args=uri_args)
         return self
 
     def build_headers(self):
         return {"Accept": "application/json", "authorization": "Bearer {}".format(self.bearer_token)}
 
     def _process_call(self, method):
-        url = build_uri(self.endpoint, self.api_version, self.uri_parts)
+        url = build_uri(self.endpoint, self.api_version, self.uri_parts, self.uri_args)
         r = requests.get(url, headers=self.build_headers())
         self.uri_parts = ()
         if self.extract_items:
@@ -160,7 +183,7 @@ class ClashOfClans(ApiCall):
     
     Examples:
     
-        To start the
+        To start the client:
             
             from coc import *
             coc = ClashOfClans(bearer_token=<api_key>)
@@ -177,6 +200,14 @@ class ClashOfClans(ApiCall):
         
             coc.locations(32000218).rankings('clans').get()
             coc.locations(32000218).rankings.clans.get()
+        
+        Note that attributes starting with an underscore are omitted.
+        
+        To access include parameters in the call use provide dictionary like arguments to the call:
+    
+            coc.clans(name='theclan', minMembers=10).get()
+        
+        This produces /clans?name=theclan&minMembers=10. The parameters are uri encoded.
             
     
     Args:

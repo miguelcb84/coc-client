@@ -56,11 +56,6 @@ def test_leagues_apicall(api_key):
 
 @slow_test
 @pytest.mark.api_call
-def test_clan_by_params_apicall(api_key):
-    assert 0
-
-@slow_test
-@pytest.mark.api_call
 def test_clan_by_tag_apicall(api_key):
     coc = ClashOfClans(bearer_token=api_key)
     r = coc.clans('#8R9LRVGU').get()
@@ -75,5 +70,15 @@ def test_clan_members_by_tag_apicall(api_key):
     assert r.status_code == 200
     assert isinstance(r, list)
     
-
+@slow_test
+@pytest.mark.api_call
+def test_clan_search_apicall(api_key):
+    coc = ClashOfClans(bearer_token=api_key)
+    r = coc.clans(minMembers=10).get()
+    assert r.status_code == 200
+    assert isinstance(r, list)
     
+    coc = ClashOfClans(bearer_token=api_key)
+    r = coc.clans(minMembers=10, warFrequency='always').get()
+    assert r.status_code == 200
+    assert isinstance(r, list)
