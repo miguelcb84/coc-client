@@ -33,10 +33,11 @@ def build_uri(endpoint, api_version, uri_parts, uri_args={}):
     return url_to_call
 
 
-def wrap_response(resp):
+def wrap_response(resp, api_call):
     """ Wrap the requests response in an `ApiResponse` object 
     
         :param object resp: response object provided by the `requests` library.
+        :param object api_call: Api Call
         :return: An `ApiResponse` object that wraps the content of the response.
         :rtype: object, list or dict
     """
@@ -46,7 +47,13 @@ def wrap_response(resp):
             if "items" in js_resp.keys():
                 r = ApiListResponse(js_resp["items"])
             else:
-                r = ApiDictResponse(js_resp)            
+                r = ApiDictResponse(js_resp)
+            if "paging" in js_resp.keys():
+                cursors = js_resp.get("paging", {}).get("cursors", {})
+                if "after" in cursors.keys():
+                    r.next = api_call(after=cursors["after"])
+                if "before" in cursors.keys():
+                    r.previous = api_call(after=cursors["before"])
         else:
             r = ApiDictResponse(js_resp)
             if "error" in js_resp.keys():
@@ -139,8 +146,6 @@ class ApiCall(object):
         if k.startswith("_"):
             pass
         else:
-            #self.uri_parts = self.uri_parts + (k,)
-            print(self.uri_parts + (k,))
             return ApiCall(self.bearer_token, self.endpoint, self.api_version, extract_items=self.extract_items,
                            uri_parts=self.uri_parts + (k,), uri_args=self.uri_args)
                     
@@ -151,8 +156,8 @@ class ApiCall(object):
         if args or kwargs:
             uri_args = {}
             if kwargs:
-                uri_args = kwargs.copy()
-                uri_args.update(self.uri_args)
+                uri_args = self.uri_args.copy()
+                uri_args.update(kwargs)
             
             return ApiCall(self.bearer_token, self.endpoint, self.api_version, extract_items=self.extract_items,
                            uri_parts=self.uri_parts + args, uri_args=uri_args)
@@ -165,9 +170,9 @@ class ApiCall(object):
     def _process_call(self, method):
         url = build_uri(self.endpoint, self.api_version, self.uri_parts, self.uri_args)
         r = requests.get(url, headers=self.build_headers())
-        self.uri_parts = ()
+        #self.uri_parts = ()
         if self.extract_items:
-            return wrap_response(r)
+            return wrap_response(r, self)
         else:
             return r 
       
@@ -217,6 +222,16 @@ class ClashOfClans(ApiCall):
                 coc.clans(name='theclan', minMembers=10).get()
             
             This produces /clans?name=theclan&minMembers=10. The parameters are uri encoded.
+            
+            When the results are split in more than one page (for instance, when we limit 
+            the number of results using the `limit` param) pagination is automatically 
+            handled by the client. In those cases the response will contain a `next` and ` previous` 
+            attributes to store the `ApiCall` objects to get the next and the previous page. 
+            For instance:
+            
+                r = coc.clans(nam='myclan', limit=5).get()
+                r.next # contains the next api call to use
+                r2 = r.next.get() # returns the second page
         
     """
     def __init__(self, 

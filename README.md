@@ -72,6 +72,20 @@ When a list is returned it is wrapped in a dictionary with the key `items`.
 The ClashOfClans client will passe the response and extract the items list, and return it as response.
 In case this behaviour is not desired, the parameter `extract_items` should be set to `False` when creating the `ClashObClans` client.
 
+### Pagination hangling
+
+When the results are split in more than one page (for instance, when we limit 
+the number of results using the `limit` param) pagination is automatically 
+handled by the client. In those cases the response will contain a `next` and ` previous` 
+attributes to store the `ApiCall` objects to get the next and the previous page. 
+For instance:
+
+    r = coc.clans(nam='myclan', limit=5).get()
+    r.next # contains the next api call to use
+    r2 = r.next.get() # returns the second page
+
+If the ClashOfClans client was created using the `extract_items=False`, pagination handling won't be available.
+
 ### Additional information
 
 Response objects also contain additional information about the response. This is:
