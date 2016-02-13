@@ -1,4 +1,4 @@
-  Clash of Clans API client
+Clash of Clans API client
 ===========================================================
 
 Simple yet complete Python client for ClashOfClans API.
