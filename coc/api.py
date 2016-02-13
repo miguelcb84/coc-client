@@ -188,7 +188,7 @@ class ClashOfClans(ApiCall):
             from coc import *
             coc = ClashOfClans(bearer_token=<api_key>)
     
-        To access all locations use call (GET /locations)
+        To access all locations use the call (GET /locations)
         
             coc.locations.get()
         
@@ -203,7 +203,7 @@ class ClashOfClans(ApiCall):
         
         Note that attributes starting with an underscore are omitted.
         
-        To access include parameters in the call use provide dictionary like arguments to the call:
+        To include parameters in the call use provide dictionary like arguments to the call:
     
             coc.clans(name='theclan', minMembers=10).get()
         
