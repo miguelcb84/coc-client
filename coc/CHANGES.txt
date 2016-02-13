@@ -1,0 +1,5 @@
+v0.2:
+  * Pagination support
+  
+v0.1:
+  * Initial version
