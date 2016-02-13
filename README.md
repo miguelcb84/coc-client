@@ -6,13 +6,13 @@ Simple yet complete Python client for ClashOfClans API.
 The design phylosophy is use the same structure in the API call and the REST Url. 
 So reading the official API documentation, client calls become intuitive.
 
-== Installation ==   
+## Installation
 
 It is available using pip. Simply type:
 
     pip install coc-client
 
-== Using the client ==
+## Using the client
   
 Create a new Clash of clans connector.
 Use the API key as the `bearer_token` to identify your call.
@@ -46,7 +46,7 @@ This produces /clans?name=theclan&minMembers=10. The parameters are uri encoded.
 
 Note that attributes starting with an underscore are omitted.
 
-== Response wrappers ==
+## Response wrappers
 
 The response of ClashOfClans API calls is of type `ApiRespose`. 
 It wrappes either a `list` or a `dict`, depending on the nature of the object contained.
@@ -72,7 +72,7 @@ When a list is returned it is wrapped in a dictionary with the key `items`.
 The ClashOfClans client will passe the response and extract the items list, and return it as response.
 In case this behaviour is not desired, the parameter `extract_items` should be set to `False` when creating the `ClashObClans` client.
 
-=== Additional information ===
+### Additional information
 
 Response objects also contain additional information about the response. This is:
 
@@ -80,8 +80,7 @@ Response objects also contain additional information about the response. This is
 * the status code, given by the `status_code` attribute. 
 * the error message, stored in the `error` attribute.
 
-
-== Further configuration ==
+## Further configuration
 
 ClashOfClans constructor provides additional configuration:
 
@@ -89,7 +88,7 @@ ClashOfClans constructor provides additional configuration:
 * api_version: used to build the URI to request. By default is is set to `v1`.
 * extract_items: set to `True` to parse the response and extract the items. When set to `False` the response is returned as got from requests library.
 
-== Contributions and development ==
+## Contributions and development
 
 Contributions are welcome. Simply clone or fork the repo, or open an issu to discuss about bugs and features.
 
