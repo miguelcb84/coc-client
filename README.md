@@ -1,5 +1,6 @@
 Clash of Clans API client
 ===========================================================
+[![Build Status](https://travis-ci.org/miguelcb84/coc-client.svg?branch=master)](https://travis-ci.org/miguelcb84/coc-client)
 
 Simple yet complete Python client for ClashOfClans API.
 
