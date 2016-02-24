@@ -11,7 +11,7 @@ So reading the official API documentation, client calls become intuitive.
 
 It is available using pip. Simply type:
 
-    pip install coc-client
+    pip install coc
 
 ## Using the client
   
