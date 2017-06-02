@@ -1,7 +1,7 @@
 # encoding: utf-8
-from __future__ import unicode_literals, print_function
+
 import requests
-import urllib
+import urllib.request, urllib.parse, urllib.error
 
 
 def build_uri(endpoint, api_version, uri_parts, uri_args={}):
@@ -19,16 +19,16 @@ def build_uri(endpoint, api_version, uri_parts, uri_args={}):
         The `uri_args` and the `uri_parts` are url encoded.
     """
     # to unicode
-    uri_parts = [unicode(x) for x in uri_parts]
+    uri_parts = [str(x) for x in uri_parts]
     # and encoded 
-    uri_parts = [urllib.quote(x) for x in uri_parts]
+    uri_parts = [urllib.parse.quote(x) for x in uri_parts]
     # Add enpoint and version 
     all_uri_parts = [endpoint, api_version, ] + uri_parts
     # join parts
     url_to_call = "/".join(all_uri_parts)
     # add params if any
     if uri_args:
-        url_to_call = "{}?{}".format(url_to_call, urllib.urlencode(uri_args))
+        url_to_call = "{}?{}".format(url_to_call, urllib.parse.urlencode(uri_args))
     # return
     return url_to_call
 
@@ -44,21 +44,21 @@ def wrap_response(resp, api_call):
     try:
         js_resp = resp.json()
         if resp.ok:
-            if "items" in js_resp.keys():
+            if "items" in list(js_resp.keys()):
                 r = ApiListResponse(js_resp["items"])
             else:
                 r = ApiDictResponse(js_resp)
-            if "paging" in js_resp.keys():
+            if "paging" in list(js_resp.keys()):
                 cursors = js_resp.get("paging", {}).get("cursors", {})
-                if "after" in cursors.keys():
+                if "after" in list(cursors.keys()):
                     r.next = api_call(after=cursors["after"])
-                if "before" in cursors.keys():
+                if "before" in list(cursors.keys()):
                     r.previous = api_call(after=cursors["before"])
         else:
             r = ApiDictResponse(js_resp)
-            if "error" in js_resp.keys():
+            if "error" in list(js_resp.keys()):
                 r.error = js_resp['error']
-            elif "message" in js_resp.keys():
+            elif "message" in list(js_resp.keys()):
                 r.error = js_resp['message']
         # common to all
         r.status_code = resp.status_code 

@@ -27,10 +27,10 @@ def test_specific_locations_apicall(api_key):
     r = coc.locations(32000260).get()
     assert r.status_code == 200
     assert isinstance(r, dict)
-    assert r['countryCode'] == u'ZW'
+    assert r['countryCode'] == 'ZW'
     assert r['id'] == 32000260
     assert r['isCountry'] == True
-    assert r['name'] == u'Zimbabwe'
+    assert r['name'] == 'Zimbabwe'
 
 @slow_test 
 @pytest.mark.api_call    
