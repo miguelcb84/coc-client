@@ -4,20 +4,20 @@ import pytest
 @pytest.fixture
 def response_api_locations():
     return [
-        {u'id': 32000000, u'isCountry': False, u'name': u'Europe'},
-        {u'id': 32000001, u'isCountry': False, u'name': u'North America'},
-        {u'countryCode': u'AF',
-          u'id': 32000007,
-          u'isCountry': True,
-          u'name': u'Afghanistan'},
-         {u'countryCode': u'AX',
-          u'id': 32000008,
-          u'isCountry': True,
-          u'name': u'\xc5land Islands'},
-         {u'countryCode': u'AL',
-          u'id': 32000009,
-          u'isCountry': True,
-          u'name': u'Albania '}
+        {'id': 32000000, 'isCountry': False, 'name': 'Europe'},
+        {'id': 32000001, 'isCountry': False, 'name': 'North America'},
+        {'countryCode': 'AF',
+          'id': 32000007,
+          'isCountry': True,
+          'name': 'Afghanistan'},
+         {'countryCode': 'AX',
+          'id': 32000008,
+          'isCountry': True,
+          'name': '\xc5land Islands'},
+         {'countryCode': 'AL',
+          'id': 32000009,
+          'isCountry': True,
+          'name': 'Albania '}
     ]
 
 def test_filter_country_locations__filters_countries(response_api_locations):

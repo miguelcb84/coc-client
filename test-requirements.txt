@@ -1,3 +1,2 @@
 -r requirements.txt
-py==1.4.31
-pytest==2.8.7
+pytest==3.1.1
