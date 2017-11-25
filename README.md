@@ -4,7 +4,7 @@ Clash of Clans API client
 
 Simple yet complete Python client for ClashOfClans API.
 
-The design phylosophy is use the same structure in the API call and the REST Url. 
+The design philosophy is use the same structure in the API call and the REST URL. 
 So reading the official API documentation, client calls become intuitive.
 
 ## Installation
@@ -59,7 +59,7 @@ For instance, locations returns a list of locations:
     r[0]['nane'] # r is a list
     >> "Europe"
 
-While, getting a location by id returns a single objcet, this is a dict:
+While, getting a location by id returns a single object, this is a dict:
 
     coc.locations(32000000).get()
     >>> {
@@ -70,14 +70,14 @@ While, getting a location by id returns a single objcet, this is a dict:
 
 It is important to point out that the API never returns a list as a root object. 
 When a list is returned it is wrapped in a dictionary with the key `items`. 
-The ClashOfClans client will passe the response and extract the items list, and return it as response.
-In case this behaviour is not desired, the parameter `extract_items` should be set to `False` when creating the `ClashObClans` client.
+The ClashOfClans client will pass the response and extract the items list, and return it as response.
+In case this behaviour is not desired, the parameter `extract_items` should be set to `False` when creating the `ClashOfClans` client.
 
-### Pagination hangling
+### Pagination handling
 
 When the results are split in more than one page (for instance, when we limit 
 the number of results using the `limit` param) pagination is automatically 
-handled by the client. In those cases the response will contain a `next` and ` previous` 
+handled by the client. In those cases the response will contain a `next` and `previous` 
 attributes to store the `ApiCall` objects to get the next and the previous page. 
 For instance:
 
@@ -105,8 +105,8 @@ ClashOfClans constructor provides additional configuration:
 
 ## Contributions and development
 
-Contributions are welcome. Simply clone or fork the repo, or open an issu to discuss about bugs and features.
+Contributions are welcome. Simply clone or fork the repo, or open an issue to discuss about bugs and features.
 
-All library requirements are provided in the `requirements.txt` file. Additiolan requirements for testing are gathered in the `test-requirements.txt` file.  
+All library requirements are provided in the `requirements.txt` file. Additional requirements for testing are gathered in the `test-requirements.txt` file.  
 
 To run the tests locally, the COC_API_KEY environment variable must be set. 
