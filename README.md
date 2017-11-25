@@ -59,7 +59,7 @@ For instance, locations returns a list of locations:
     r[0]['nane'] # r is a list
     >> "Europe"
 
-While, getting a location by id returns a single objcet, this is a dict:
+While, getting a location by id returns a single object, this is a dict:
 
     coc.locations(32000000).get()
     >>> {
@@ -71,7 +71,7 @@ While, getting a location by id returns a single objcet, this is a dict:
 It is important to point out that the API never returns a list as a root object. 
 When a list is returned it is wrapped in a dictionary with the key `items`. 
 The ClashOfClans client will pass the response and extract the items list, and return it as response.
-In case this behaviour is not desired, the parameter `extract_items` should be set to `False` when creating the `ClashObClans` client.
+In case this behaviour is not desired, the parameter `extract_items` should be set to `False` when creating the `ClashOfClans` client.
 
 ### Pagination hangling
 
