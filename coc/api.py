@@ -19,9 +19,9 @@ def build_uri(endpoint, api_version, uri_parts, uri_args={}):
         The `uri_args` and the `uri_parts` are url encoded.
     """
     # to unicode
-    uri_parts = [unicode(x) for x in uri_parts]
+    uri_parts = [str(x) for x in uri_parts]
     # and encoded 
-    uri_parts = [urllib.quote(x) for x in uri_parts]
+    uri_parts = [urllib.parse.quote(x) for x in uri_parts]
     # Add enpoint and version 
     all_uri_parts = [endpoint, api_version, ] + uri_parts
     # join parts
