@@ -10,6 +10,8 @@ pplying modifications for demonstarting example
 ##Installation
 yshyvxshyuxvsghxv sguxvgshbvhsbxhbxshhhhbbbx
 
+this file is edited in git hub page directly........
+
 It is available using pip. Simply typeftfxvfgxsvxsouxvsgxvsgxv
 
     pip install coc
