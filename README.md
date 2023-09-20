@@ -7,9 +7,10 @@ Simple yet complete Python client for ClashOfClans API.
 The design phylosophy is use the same structure in the API call and the REST Url. 
 So reading the official API documentation, client calls become intuitive.
 pplying modifications for demonstarting example
-## Installation
+##Installation
+yshyvxshyuxvsghxv sguxvgshbvhsbxhbxshhhhbbbx
 
-It is available using pip. Simply type:
+It is available using pip. Simply typeftfxvfgxsvxsouxvsgxvsgxv
 
     pip install coc
 
